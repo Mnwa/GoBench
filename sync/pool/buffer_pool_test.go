@@ -26,13 +26,13 @@ func PutBuffer(buf *bytes.Buffer) {
 
 type TestingData struct {
 	Data string `json:"data"`
-	Key string `json:"key"`
+	Key  string `json:"key"`
 }
 
-func BenchmarkReadStreamWithPool(b *testing.B)  {
+func BenchmarkReadStreamWithPool(b *testing.B) {
 	data := TestingData{
-		Data:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque molestie.",
-		Key: "Lorem",
+		Data: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque molestie.",
+		Key:  "Lorem",
 	}
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -46,13 +46,12 @@ func BenchmarkReadStreamWithPool(b *testing.B)  {
 	}
 }
 
-func BenchmarkReadStreamWithoutPool(b *testing.B)  {
+func BenchmarkReadStreamWithoutPool(b *testing.B) {
 	data := TestingData{
-		Data:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque molestie.",
-		Key: "Lorem",
+		Data: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque molestie.",
+		Key:  "Lorem",
 	}
 	b.ReportAllocs()
-	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		buf := new(bytes.Buffer)
 		_ = json.NewEncoder(buf).Encode(&data)

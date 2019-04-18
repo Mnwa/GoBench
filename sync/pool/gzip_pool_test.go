@@ -24,22 +24,20 @@ func PutGzipWriter(buf *gzip.Writer) {
 	writerGzipPool.Put(buf)
 }
 
-func BenchmarkWriteGzipWithPool(b *testing.B)  {
-	data := bytes.NewReader([]byte("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque molestie."))
+func BenchmarkWriteGzipWithPool(b *testing.B) {
 	b.ReportAllocs()
-	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
+		data := bytes.NewReader([]byte("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque molestie."))
 		writer := GetGzipWriter()
 		io.Copy(writer, data)
 		PutGzipWriter(writer)
 	}
 }
 
-func BenchmarkWriteGzipWithoutPool(b *testing.B)  {
-	data := bytes.NewReader([]byte("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque molestie."))
+func BenchmarkWriteGzipWithoutPool(b *testing.B) {
 	b.ReportAllocs()
-	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
+		data := bytes.NewReader([]byte("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque molestie."))
 		writer := gzip.NewWriter(ioutil.Discard)
 		io.Copy(writer, data)
 	}

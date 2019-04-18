@@ -24,22 +24,20 @@ func PutBufioWriter(buf *bufio.Writer) {
 	writerBufioPool.Put(buf)
 }
 
-func BenchmarkWriteBufioWithPool(b *testing.B)  {
-	data := bytes.NewReader([]byte("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque molestie."))
+func BenchmarkWriteBufioWithPool(b *testing.B) {
 	b.ReportAllocs()
-	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
+		data := bytes.NewReader([]byte("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque molestie."))
 		writer := GetBufioWriter()
 		io.Copy(writer, data)
 		PutBufioWriter(writer)
 	}
 }
 
-func BenchmarkWriteBufioWithoutPool(b *testing.B)  {
-	data := bytes.NewReader([]byte("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque molestie."))
+func BenchmarkWriteBufioWithoutPool(b *testing.B) {
 	b.ReportAllocs()
-	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
+		data := bytes.NewReader([]byte("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque molestie."))
 		writer := bufio.NewWriter(ioutil.Discard)
 		io.Copy(writer, data)
 	}
